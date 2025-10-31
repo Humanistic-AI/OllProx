@@ -9,6 +9,7 @@ import socket
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.responses import StreamingResponse
 import uvicorn
+import time
 
 app = FastAPI(title="Ollama Proxy", version="1.0.0")
 
@@ -26,12 +27,15 @@ CACHE_TTL = int(os.getenv("CACHE_TTL", "3600"))  # Default 1 hour in seconds
 # API Key configuration
 API_KEY_FILE = "api_keys.txt"
 API_KEY_SALT = os.getenv("API_KEY_SALT", "DEF"+str(secrets.token_urlsafe(16)))
+API_KEY_REFRESH_TIME = max([int(os.getenv("KEY_REFRESH",10)),2])
 already_salted = bool(os.getenv("API_KEY_SALT"))
 
 VALID_API_KEYS_SALTED = set()
+LAST_KEY_REFRESH = time.time()
 
 
 def get_keys_from_file(file_path: str) -> set:
+    LAST_KEY_REFRESH = time.time()
     all_keys = set()
     try:
         with open(file_path, 'r') as f:
@@ -75,7 +79,10 @@ def verify_api_key(api_key: str) -> bool:
     hashed_key = hash_api_key(api_key)
     if not hashed_key:
         return False
-    if not hashed_key in VALID_API_KEYS:
+
+    current_time = time.time()
+    if (current_time - LAST_KEY_REFRESH).seconds() > API_KEY_REFRESH_TIME \
+        or (not hashed_key in VALID_API_KEYS):
         newkeys = get_keys_from_file(API_KEY_FILE)
         if newkeys:
             VALID_API_KEYS = newkeys

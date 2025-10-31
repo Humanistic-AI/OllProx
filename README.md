@@ -49,3 +49,8 @@ response = requests.post(
 print(response.json())
 
 ```
+
+
+### To modify keys
+* Just change the key's file
+* If you revoke a key, it might take up to $KEY_REFRESH$ seconds for it to be invalidated
