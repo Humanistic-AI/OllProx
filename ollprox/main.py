@@ -150,7 +150,7 @@ def call_model(request: Dict[Any,Any], apikey: str = Header(None)):
             timeout=300.0,  # 5 minutes timeout for long-running requests
         )
         response.raise_for_status()
-        response_data = response.json()
+        response_data = response.raw
         
         # Cache the response
         if redis_client and cache_key:
