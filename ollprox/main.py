@@ -30,7 +30,7 @@ API_KEY_SALT = os.getenv("API_KEY_SALT", "DEF"+str(secrets.token_urlsafe(16)))
 API_KEY_REFRESH_TIME = max([int(os.getenv("KEY_REFRESH",10)),2])
 already_salted = bool(os.getenv("API_KEY_SALT"))
 
-VALID_API_KEYS_SALTED_SALTED = set()
+VALID_API_KEYS_SALTED = set()
 LAST_KEY_REFRESH = time.time()
 
 
@@ -59,13 +59,13 @@ def hash_api_key(key: str) -> str:
 
 # Initialize valid API keys
 if API_KEY_FILE and os.path.exists(API_KEY_FILE):
-    VALID_API_KEYS_SALTED_SALTED = get_keys_from_file(API_KEY_FILE)
+    VALID_API_KEYS_SALTED = get_keys_from_file(API_KEY_FILE)
 
-if not VALID_API_KEYS_SALTED_SALTED:
+if not VALID_API_KEYS_SALTED:
     # Generate a random API key if no file is provided, this is not secure for production
     random.seed(socket.gethostname())
     generated_key = ''.join(random.choice('0123456789abcdef') for _ in range(32))
-    VALID_API_KEYS_SALTED_SALTED.add(generated_key)
+    VALID_API_KEYS_SALTED.add(generated_key)
     print(f"[IMPORTANT] No API key file provided. Generated random API key: {generated_key}")
 
 def get_cache_key(request: dict) -> str:
@@ -82,7 +82,7 @@ def verify_api_key(api_key: str) -> bool:
 
     current_time = time.time()
     if current_time - LAST_KEY_REFRESH > API_KEY_REFRESH_TIME \
-        or (not hashed_key in VALID_API_KEYS_SALTED_SALTED):
+        or (not hashed_key in VALID_API_KEYS_SALTED):
         newkeys = get_keys_from_file(API_KEY_FILE)
         if newkeys:
             VALID_API_KEYS_SALTED = newkeys
