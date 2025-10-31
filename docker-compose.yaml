@@ -6,7 +6,7 @@ services:
     image: ollama/ollama:latest
     container_name: ollama_server  
     volumes:
-      - "{$OLLAMA_LOCAL_DATA:-ollama}:/root/.ollama/"
+      - "${OLLAMA_LOCAL_DATA:-ollama}:/root/.ollama/"
     restart: unless-stopped
     runtime: nvidia
 
