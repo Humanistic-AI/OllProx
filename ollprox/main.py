@@ -173,6 +173,7 @@ def call_model(request: dict, apikey: str = Header(None)):
 @app.get("/health")
 def health():
     """Health check endpoint."""
+    print(f"Calling health check at {OLLAMA_URL}/api/tags")
     try:
         response = requests.get(
             f"{OLLAMA_URL}/api/tags",
