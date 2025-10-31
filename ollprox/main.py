@@ -45,7 +45,7 @@ class API_Key_Authenticator:
             # Generate a random API key if no file is provided, this is not secure for production
             random.seed(socket.gethostname())
             generated_key = ''.join(random.choice('0123456789abcdef') for _ in range(32))
-            self.VALID_API_KEYS_SALTED.add(generated_key)
+            self.VALID_API_KEYS_SALTED.add(self.hash_api_key(generated_key))
             print(f"[IMPORTANT] No API key file provided. Generated random API key: {generated_key}")
 
 
