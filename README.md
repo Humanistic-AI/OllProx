@@ -30,7 +30,7 @@ curl -X POST http://localhost:8000/call_model \
   -H "APIKEY: secretgardenkey" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "llama2",
+    "model": "gpt-oss:20b",
     "prompt": "What is the capital of France?"
   }'
 

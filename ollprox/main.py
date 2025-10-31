@@ -81,7 +81,7 @@ def verify_api_key(api_key: str) -> bool:
         return False
 
     current_time = time.time()
-    if (current_time - LAST_KEY_REFRESH).seconds() > API_KEY_REFRESH_TIME \
+    if current_time - LAST_KEY_REFRESH > API_KEY_REFRESH_TIME \
         or (not hashed_key in VALID_API_KEYS):
         newkeys = get_keys_from_file(API_KEY_FILE)
         if newkeys:
