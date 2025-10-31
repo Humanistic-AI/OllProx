@@ -1,0 +1,57 @@
+## Docker compose that launches an ollama server, a redis instance, an FastAPI built from the ollprox directory
+
+version: '3.8'  
+
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_server
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/data
+    restart: unless-stopped
+    networks:
+      - internal_net
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - internal_net
+
+  ollprox:
+    build: ./ollprox
+    container_name: ollama_proxy
+    ports:
+      - "8000:${EXTERNAL_PORT:-8000}"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - ./.env
+    depends_on:      
+      - ollama
+      - redis
+    restart: unless-stopped
+    networks:
+      - internal_net
+      - ollprox_bridge
+    volumes:
+      - ${API_KEY_FILE:-./api_keys.txt}:/api_keys.txt  # Mount the API key file if specified
+
+volumes:
+  ollama_data:
+  redis_data:
+
+networks:
+  internal_net:    
+    internal: true
+  ollprox_bridge:
+    driver: bridge
