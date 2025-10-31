@@ -2,12 +2,13 @@
 
 services:
 
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama_server  
-  #   volumes:
-  #     - ollama_data:/data
-  #   restart: unless-stopped
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_server  
+    volumes:
+      - {OLLAMA_LOCAL_DATA:-ollama}:/root/.ollama/
+    restart: unless-stopped
+    runtime: nvidia
 
 
   redis:
@@ -29,7 +30,7 @@ services:
     env_file:
       - ./.env
     depends_on:      
-      #- ollama
+      - ollama
       - redis
     restart: unless-stopped
 

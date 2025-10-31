@@ -14,7 +14,7 @@ import time
 app = FastAPI(title="Ollama Proxy", version="1.0.0")
 
 # Get configuration from environment variables
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "172.17.0.1")
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "ollama")
 OLLAMA_PORT = int(os.getenv("OLLAMA_PORT", "11434"))
 OLLAMA_URL = f"http://{OLLAMA_HOST}:{OLLAMA_PORT}"
 

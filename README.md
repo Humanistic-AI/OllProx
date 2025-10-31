@@ -5,7 +5,7 @@ Ollama is great, but it doesn't support authentication nor caching.
 This small wrapper provides an Api-key based authentication.
 
 ### To run:
-1. Launch your ollama server on this host. Currently you have to launch this outside of docker, which also alows you to configure your GPU at ease.
+1. Install nvidia gpu docker support on your host. Instructions are in the [Ollama Docker Page](https://hub.docker.com/r/ollama/ollama). Don't do the run
 
 2. Create a `.env` file based on the example
   *  If you already have a set of salted keys, add the local path to the file containing the keys, one per line, to the `API_KEY_FILE` variable and add the salt to the `API_KEY_SALT` variable.
@@ -16,6 +16,8 @@ This small wrapper provides an Api-key based authentication.
 3. Launch with `docker compose up`
 
 4. If you didn't provide any keys, check the terminal for a valid API key
+
+5. After running, launch your models (will pull if needed), e.g. `docker exec -it ollama_server run gpt-oss:20b`
 
 
 ### To call:
