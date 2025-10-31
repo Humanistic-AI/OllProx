@@ -82,9 +82,9 @@ class API_Key_Authenticator:
             or (not hashed_key in self.VALID_API_KEYS_SALTED):
             newkeys = self.get_keys_from_file(self.API_KEY_FILE)
             if newkeys:
-                VALID_API_KEYS_SALTED = newkeys
+                self.VALID_API_KEYS_SALTED = newkeys
             
-        return hashed_key in VALID_API_KEYS_SALTED
+        return hashed_key in self.VALID_API_KEYS_SALTED
 
 
 authenticator = API_Key_Authenticator()
