@@ -10,6 +10,7 @@ from fastapi import FastAPI, HTTPException, Header
 from fastapi.responses import StreamingResponse
 import uvicorn
 import time
+from typing import Dict, Any
 
 app = FastAPI(title="Ollama Proxy", version="1.0.0")
 
@@ -106,7 +107,7 @@ except Exception as e:
 
 
 @app.post("/call_model")
-def call_model(request: dict, apikey: str = Header(None)):
+def call_model(request: Dict[Any,Any], apikey: str = Header(None)):
     """
     Forward POST request to ollama service with TTL caching and API key authentication.
     
