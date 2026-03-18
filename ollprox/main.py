@@ -12,7 +12,11 @@ import uvicorn
 import time
 from typing import Dict, Any
 
-app = FastAPI(title="Ollama Proxy", version="1.0.0")
+app = FastAPI(title="Ollama Proxy", 
+              version="1.0.0",
+              description="A proxy service for Ollama with API key authentication and Redis caching.",
+              root_path=os.getenv("ROOT_PATH", "")
+              )
 
 # Get configuration from environment variables
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "ollama")
