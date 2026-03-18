@@ -23,7 +23,7 @@ app = FastAPI(title="Ollama Proxy",
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
-    print(str(exc))
+    print(str(exc.detail))
     print(f"Request: {request.method} {request.url}")
     return PlainTextResponse("", status_code=exc.status_code)
 
