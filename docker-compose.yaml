@@ -11,6 +11,7 @@ services:
     runtime: nvidia
 
 
+
   redis:
     image: redis:latest
     container_name: redis_cache

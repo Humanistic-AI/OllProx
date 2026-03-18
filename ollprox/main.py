@@ -8,6 +8,9 @@ import random
 import socket
 from fastapi import FastAPI, HTTPException, Header
 
+from fastapi.responses import PlainTextResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
 import uvicorn
 import time
 from typing import Dict, Any
@@ -17,6 +20,10 @@ app = FastAPI(title="Ollama Proxy",
               description="A proxy service for Ollama with API key authentication and Redis caching.",
               root_path=os.getenv("ROOT_PATH", "")
               )
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request, exc):
+    return PlainTextResponse("", status_code=exc.status_code)
 
 # Get configuration from environment variables
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "ollama")
