@@ -200,7 +200,7 @@ def health():
             timeout=5.0
         )
         response.raise_for_status()
-        return {"status": "healthy", "ollama": "connected"}
+        return {"status": "healthy", "ollama": "connected", "tags": response.json()}
     except Exception as e:
         raise HTTPException(
             status_code=503,
