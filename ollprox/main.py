@@ -171,12 +171,12 @@ def call_model(request: Dict[Any,Any], apikey: str = Header(None)):
                 redis_client.setex(
                     cache_key,
                     CACHE_TTL,
-                    json.dumps(response_data)
+                    json.dumps(response.json())
                 )
             except Exception as e:
                 print(f"Cache storage error: {e}")
         
-        return response_data
+        return response.json()
     
     except requests.exceptions.RequestException as e:
         raise HTTPException(
