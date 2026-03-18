@@ -7,7 +7,7 @@ import secrets
 import random
 import socket
 from fastapi import FastAPI, HTTPException, Header
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, BackgroundTask
 import uvicorn
 import time
 from typing import Dict, Any
@@ -106,7 +106,7 @@ except Exception as e:
     redis_client = None
 
 
-@app.post("/call_model")
+@app.post("/api/generate")
 def call_model(request: Dict[Any,Any], apikey: str = Header(None)):
     """
     Forward POST request to ollama service with TTL caching and API key authentication.
